@@ -1,29 +1,45 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addContacts } from "redux/appReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { addContacts, selectContacts } from "redux/appReducer";
 import { nanoid } from "nanoid";
 import { Button, FormContainer, Label, Input } from "components/Emotion.styled";
 
 export const Form = () => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
-  const handleNameChange = (evt) => {
-    setName(evt.target.value);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleName = e => {
+    setName(e.target.value)
+  };
+  const handleNumber = e => {
+    setPhone(e.target.value)
   };
 
-  const handleNumberChange = (evt) => {
-    setNumber(evt.target.value);
+  const duplicating = (newContactName) => {
+    return contacts.some((existingContact) => existingContact.name === newContactName);
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    const contact = { name, number, id: nanoid() };
-    dispatch(addContacts(contact));
 
-    setName("");
-    setNumber("");
+    const newContactItem = {
+      id: nanoid(),
+      name,
+      phone,
+    };
+
+    if (!duplicating(newContactItem.name)) {
+      dispatch(addContacts(newContactItem)); 
+      setName("");
+      setPhone("");
+    } else {
+      alert(`${newContactItem.name} already exists. Please use a different name.`);
+      setName("");
+      setPhone("");
+    }
   };
 
   return (
@@ -31,7 +47,7 @@ export const Form = () => {
       <Label>
         Name
         <Input
-          onChange={handleNameChange}
+          onChange={handleName}
           type="text"
           value={name}
           name="name"
@@ -44,9 +60,9 @@ export const Form = () => {
       <Label>
         Number
         <Input
-          onChange={handleNumberChange}
+          onChange={handleNumber}
           type="tel"
-          value={number}
+          value={phone}
           name="number"
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
@@ -58,6 +74,4 @@ export const Form = () => {
     </FormContainer>
   );
 };
-
-
 

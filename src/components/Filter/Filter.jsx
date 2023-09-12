@@ -1,20 +1,21 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterIsChanged } from "redux/appReducer";
+import { selectFilterTerm, setFilterTerm } from "redux/appReducer";
 import { Label, Input } from "components/Emotion.styled";
 
 export const Filter = () => {
-  const filter = useSelector((state) => state.appState.filter);
-  const dispatch = useDispatch();
+const dispatch = useDispatch;
+const filter = useSelector(selectFilterTerm);
 
-  const handleChange = (evt) => {
-    dispatch(filterIsChanged(evt.target.value));
-  };
+const hendleInput = (e) => {
+  const newContact = e.target.value;
+  dispatch(setFilterTerm(newContact));
+};
 
   return (
     <Label>
       Find contacts by name
-      <Input type="text" value={filter} onChange={handleChange} />
+      <Input type="text" value={filter} onChange={hendleInput} />
     </Label>
   );
 };
