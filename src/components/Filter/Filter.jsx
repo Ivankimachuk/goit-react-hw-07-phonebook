@@ -4,12 +4,12 @@ import { selectFilterTerm, setFilterTerm } from "redux/appReducer";
 import { Label, Input } from "components/Emotion.styled";
 
 export const Filter = () => {
-const dispatch = useDispatch;
+const dispatch = useDispatch();
 const filter = useSelector(selectFilterTerm);
 
 const hendleInput = (e) => {
-  const newContact = e.target.value;
-  dispatch(setFilterTerm(newContact));
+  const newValue  = e.target.value;
+  dispatch(setFilterTerm( newValue ));
 };
 
   return (

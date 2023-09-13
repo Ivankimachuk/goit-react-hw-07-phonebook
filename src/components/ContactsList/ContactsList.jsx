@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContacts, selectContacts, selectFilterTerm, selectIsLoading } from "redux/appReducer";
+import { Loader } from "components/Loader/Loader";
 import { ContainerList, ContactItem, Btn } from "components/Emotion.styled";
 
 
@@ -19,7 +20,7 @@ export const ContactsList = () => {
 
   return (
     <ContainerList>
-      {isLoading && <p>Loading data...</p>}
+      {isLoading && <Loader />}
       {filtderContacts().length > 0 && !isLoading && filtderContacts().map(contact => 
        <ContactItem key={contact.id}>
        {contact.name}: {contact.phone}
